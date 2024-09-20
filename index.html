@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Speller</title>
+</head>
+<body>
+    <h1>Number Speller</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number">
+    <button onclick="convertNumber()">Convert</button>
+    <p id="result"></p>
+
+    <script>
+        function convertNumber() {
+            const number = document.getElementById('numberInput').value;
+            const result = document.getElementById('result');
+            result.innerText = numberToWords(number);
+        }
+
+        function numberToWords(num) {
+            const belowTwenty = [
+                'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 
+                'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 
+                'Eighteen', 'Nineteen'
+            ];
+            const tens = [
+                '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+            ];
+            const thousands = [
+                '', 'Thousand', 'Million', 'Billion', 'Trillion', 'Quadrillion', 'Quintillion'
+            ];
+
+            if (num < 20) return belowTwenty[num];
+            if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 ? ' ' + belowTwenty[num % 10] : '');
+            if (num < 1000) return belowTwenty[Math.floor(num / 100)] + ' Hundred' + (num % 100 ? ' and ' + numberToWords(num % 100) : '');
+
+            let word = '';
+            let i = 0;
+
+            while (num > 0) {
+                if (num % 1000 !== 0) {
+                    word = numberToWords(num % 1000) + ' ' + thousands[i] + (word ? ' ' + word : '');
+                }
+                num = Math.floor(num / 1000);
+                i++;
+            }
+
+            return word.trim();
+        }
+    </script>
+</body>
+</html>
